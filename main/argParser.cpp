@@ -14,7 +14,7 @@ class ArgParser{
     map<string, string> posValues;
     map<string,string> allValues;
     public:
-    void addKW(string fullName,string defaultValue = "", string shortName = ""){
+    void addKW(const string fullName,string defaultValue = "", string shortName = ""){
         if (shortName == ""){
             shortName = fullName;
         }
@@ -23,7 +23,7 @@ class ArgParser{
         kwargValues[fullName] = defaultValue;
         allValues[fullName] = defaultValue;
     }
-    void addPositional(string name, string defaultValue = ""){
+    void addPositional(const string name, string defaultValue = ""){
         posArgs.push_back(name);
         posValues[name] = defaultValue;
         allValues[name] = defaultValue;
@@ -80,7 +80,7 @@ class ArgParser{
         T argValue;
         iss >> argValue;
         if (iss.fail()){
-            cout << "type conversion failed\n";
+            cout << "Error: type conversion failed for argument: " << name << endl ;
             throw invalid_argument("type conversion failed");
         }
         return argValue;

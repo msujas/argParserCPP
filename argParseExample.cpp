@@ -8,7 +8,7 @@ int main(int argc, char *argv[]){
     ArgParser ap;
     ap.addPositional("first", "1");
     ap.addPositional("second","2");
-    ap.addKW("firstkw","3");
+    ap.addKW("firstkw","3", "fkw");
     ap.addKW("secondkw","4");
     ap.readArguments(argc,argv);
     map<string,string> pas = ap.getAllPositionalArgs();
