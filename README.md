@@ -4,12 +4,12 @@ argParseExample.exe 5.7 -fkw 73 hello,world --secondkw hi
 
 Result printed to terminal:
 
-first positional: 5.7
-second positional: hello,world
-firstkw: 73
-secondkw: hi
-73
-5.7
-78.7
-hello
-world
+first positional: 5.7<br>
+second positional: hello,world<br>
+firstkw: 73<br>
+secondkw: hi<br>
+73<br>
+5.7<br>
+78.7<br>
+hello<br>
+world<br>
