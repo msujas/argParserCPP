@@ -67,12 +67,10 @@ class ArgParser{
         }
     }
 
-    map<string, string> getAllPositionalArgs(){
-        return posValues;
+    map<string, string> getAllArgs(){
+        return allValues;
     }
-    map<string, string> getAllKWs(){
-        return kwargValues;
-    }
+
     template<typename T>
     T getArg(const string& name){
         const string stringValue = allValues[name];

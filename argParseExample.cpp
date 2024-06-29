@@ -11,12 +11,12 @@ int main(int argc, char *argv[]){
     ap.addKW("firstkw","3", "fkw");
     ap.addKW("secondkw","4");
     ap.readArguments(argc,argv);
-    map<string,string> pas = ap.getAllPositionalArgs();
-    map<string,string> kws = ap.getAllKWs();
-    cout << pas["first"] << endl;
-    cout << pas["second"] << endl;
-    cout << "firstkw: " << kws["firstkw"] << endl;
-    cout << "secondkw: " << kws["secondkw"] << endl;
+    map<string,string> allArgs = ap.getAllArgs();
+
+    cout << "first positional: " << allArgs["first"] << endl;
+    cout << "second positional: " << allArgs["second"] << endl;
+    cout << "firstkw: " << allArgs["firstkw"] << endl;
+    cout << "secondkw: " << allArgs["secondkw"] << endl;
     int firstkw = ap.getArg<int>("firstkw");
     float firstPos = ap.getArg<float>("first");
     string secondPos = ap.getArg<string>("second");
