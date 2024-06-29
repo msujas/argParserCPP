@@ -86,24 +86,3 @@ class ArgParser{
         return argValue;
     }
 };
-
-int main(int argc, char *argv[]){
-    ArgParser ap;
-    ap.addPositional("first", "1");
-    ap.addPositional("second","2");
-    ap.addKW("firstkw","3");
-    ap.addKW("secondkw","4");
-    ap.readArguments(argc,argv);
-    map<string,string> pas = ap.getAllPositionalArgs();
-    map<string,string> kws = ap.getAllKWs();
-    cout << pas["first"] << endl;
-    cout << pas["second"] << endl;
-    cout << "firstkw: " << kws["firstkw"] << endl;
-    cout << "secondkw: " << kws["secondkw"] << endl;
-    int firstkw = ap.getArg<int>("firstkw");
-    float firstPos = ap.getArg<float>("first");
-    cout << firstkw << endl;
-    cout << firstPos << endl;
-    cout << firstkw + firstPos << endl;
-
-}
