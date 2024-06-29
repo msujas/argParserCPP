@@ -19,9 +19,12 @@ int main(int argc, char *argv[]){
     cout << "secondkw: " << allArgs["secondkw"] << endl;
     int firstkw = ap.getArg<int>("firstkw"); // get individual arguments as int, float or string types
     float firstPos = ap.getArg<float>("first");
-    string secondPos = ap.getArg<string>("second");
+    vector<string> secondPos = ap.getVectorArg<string>("second");
     cout << firstkw << endl;
     cout << firstPos << endl;
     cout << firstkw + firstPos << endl;
-    cout << secondPos << endl;
+    for (string item : secondPos){
+    cout << item << endl;
+    }
+    
 }

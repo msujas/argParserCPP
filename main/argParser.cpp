@@ -5,6 +5,40 @@
 
 using namespace std;
 
+bool isIn(string s, string pattern){
+    if (s.find(pattern)!= -1){
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+vector<string> splitString(string inputString, string delimiter=","){
+    int pos;
+    string substring;
+    vector<string> outVector;
+    string  tempString = inputString;
+    if (delimiter ==" "){
+        while (isIn(tempString,"  ")){ // check if 2 consecutive spaces in string, replace with 1
+            tempString = tempString.replace(tempString.find("  "),2," ");
+        }
+        if (tempString.find(" ") == 0){
+            tempString = tempString.replace(0,1,"");
+        }
+    }
+    while (true){
+        pos = tempString.find(delimiter);
+        substring = tempString.substr(0,pos);
+        outVector.push_back(substring);
+        if (tempString.find(delimiter) == -1){
+            break;
+        }
+        tempString.erase(0,pos+delimiter.length());    
+    }
+    return outVector;
+}
+
 class ArgParser{
     private:
     vector<string> kwargs;
@@ -13,6 +47,17 @@ class ArgParser{
     vector<string> posArgs;
     map<string, string> posValues;
     map<string,string> allValues;
+    template<typename T>
+    T convertString(const string& stringValue){
+        istringstream iss (stringValue);
+        T outValue;
+        iss >> outValue;
+        if (iss.fail()){
+            cout << "Error: type conversion failed for argument: " << stringValue << endl ;
+            throw invalid_argument("type conversion failed");
+        }
+        return outValue;
+    }
     public:
     void addKW(const string fullName,string defaultValue = "", string shortName = ""){
         if (shortName == ""){
@@ -29,24 +74,17 @@ class ArgParser{
         allValues[name] = defaultValue;
     }
     void readArguments(int argc, char *argv[]){
-        vector<int> kwargPositions;
         vector<int> paPositions;
-        
         bool inKW = false;
         for (int i = 1; i < argc; i++){
-            if (inKW){
-                inKW = false;
-                continue;
-            }
             inKW = false;
             for (int j = 0; j < kwargs.size();j++){
                 string kw = kwargs[j];
                 string skw = shortKwargs[j];
                 if (argv[i] == "--"+kw | argv[i] == "-"+skw){
                     kwargValues[kw] = argv[i+1];
-                    kwargPositions.push_back(i);
-                    kwargPositions.push_back(i+1);
                     allValues[kw] = argv[i+1];
+                    i++;
                     inKW = true;
                     break;
                 }
@@ -71,16 +109,24 @@ class ArgParser{
         return allValues;
     }
 
+
+
     template<typename T>
     T getArg(const string& name){
         const string stringValue = allValues[name];
-        istringstream iss (stringValue);
-        T argValue;
-        iss >> argValue;
-        if (iss.fail()){
-            cout << "Error: type conversion failed for argument: " << name << endl ;
-            throw invalid_argument("type conversion failed");
-        }
+        T argValue = convertString<T>(stringValue);
         return argValue;
+    }
+
+    template<typename T2>
+    vector<T2> getVectorArg(const string& name){
+        const string stringValue = allValues[name];
+        vector<string> stringSplit = splitString(stringValue);
+        vector<T2> outVector;
+        for (string s : stringSplit){
+            T2 item = convertString<T2>(s);
+            outVector.push_back(item);
+        }
+        return outVector;
     }
 };
