@@ -2,42 +2,11 @@
 #include <iostream>
 #include <map>
 #include <sstream>
+#include "include/stringFunctions.cpp"
 
 using namespace std;
 
-bool isIn(string s, string pattern){
-    if (s.find(pattern)!= -1){
-        return true;
-    }
-    else {
-        return false;
-    }
-}
 
-vector<string> splitString(string inputString, string delimiter=","){
-    int pos;
-    string substring;
-    vector<string> outVector;
-    string  tempString = inputString;
-    if (delimiter ==" "){
-        while (isIn(tempString,"  ")){ // check if 2 consecutive spaces in string, replace with 1
-            tempString = tempString.replace(tempString.find("  "),2," ");
-        }
-        if (tempString.find(" ") == 0){
-            tempString = tempString.replace(0,1,"");
-        }
-    }
-    while (true){
-        pos = tempString.find(delimiter);
-        substring = tempString.substr(0,pos);
-        outVector.push_back(substring);
-        if (tempString.find(delimiter) == -1){
-            break;
-        }
-        tempString.erase(0,pos+delimiter.length());    
-    }
-    return outVector;
-}
 
 template<typename T>
 T convertString(const string& stringValue){
@@ -57,8 +26,10 @@ class ArgParser{
     vector<string> shortKwargs;
     map<string, string> kwargValues;
     vector<string> posArgs;
+    vector<string> allArgs;
     map<string, string> posValues;
     map<string,string> allValues;
+    map<string, vector<string>> multiValues;
 
     public:
     void addKW(const string fullName,string defaultValue = "", string shortName = ""){
@@ -69,11 +40,21 @@ class ArgParser{
         kwargs.push_back(fullName);
         kwargValues[fullName] = defaultValue;
         allValues[fullName] = defaultValue;
+        allArgs.push_back(fullName);
     }
     void addPositional(const string name, string defaultValue = ""){
         posArgs.push_back(name);
         posValues[name] = defaultValue;
         allValues[name] = defaultValue;
+        allArgs.push_back(name);
+    }
+    void addMultiPositional(const string name, const int length = 1){
+        allArgs.push_back(name);
+        /*
+        for (int i; i < length; i++){
+            posArgs.push_back(name);
+        }
+        */
     }
     void readArguments(int argc, char *argv[]){
         vector<int> paPositions;
@@ -110,8 +91,6 @@ class ArgParser{
     map<string, string> getAllArgs(){
         return allValues;
     }
-
-
 
     template<typename T>
     T getArg(const string& name){
