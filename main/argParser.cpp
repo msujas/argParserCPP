@@ -39,6 +39,18 @@ vector<string> splitString(string inputString, string delimiter=","){
     return outVector;
 }
 
+template<typename T>
+T convertString(const string& stringValue){
+    istringstream iss (stringValue);
+    T outValue;
+    iss >> outValue;
+    if (iss.fail()){
+        cout << "Error: type conversion failed for argument: " << stringValue << endl ;
+        throw invalid_argument("type conversion failed");
+    }
+    return outValue;
+}
+
 class ArgParser{
     private:
     vector<string> kwargs;
@@ -47,17 +59,7 @@ class ArgParser{
     vector<string> posArgs;
     map<string, string> posValues;
     map<string,string> allValues;
-    template<typename T>
-    T convertString(const string& stringValue){
-        istringstream iss (stringValue);
-        T outValue;
-        iss >> outValue;
-        if (iss.fail()){
-            cout << "Error: type conversion failed for argument: " << stringValue << endl ;
-            throw invalid_argument("type conversion failed");
-        }
-        return outValue;
-    }
+
     public:
     void addKW(const string fullName,string defaultValue = "", string shortName = ""){
         if (shortName == ""){
