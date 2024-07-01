@@ -92,7 +92,7 @@ class ArgParser{
         for (int i=0; i< kwargs.size(); i++){
             helpString += "--"+kwargs[i]+"/-"+shortKwargs[i] + ": " + argHelpStrings[kwargs[i]] + "\n";
         }
-        helpString += "positional arguments:\n\n";
+        helpString += "\npositional arguments:\n\n";
         for (string arg : posArgs){
             helpString += arg + ": " + argHelpStrings[arg] + "\n";
         }
