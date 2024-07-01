@@ -6,11 +6,11 @@ using namespace std;
 
 int main(int argc, char *argv[]){
     ArgParser ap;
-    ap.addPositional("first", "1"); //args - name, default value (string, default: "")
-    ap.addPositional("second","2");
-    ap.addKW("firstkw","3", "fkw"); // args - long name, default value (string, default: ""), short name (default: long name)
-    ap.addKW("secondkw","4");
-    ap.addKW("kw3","5");
+    ap.addPositional("first", "1", "the first positional argument"); //args - name, default value (string, default: "")
+    ap.addPositional("second","2", "the second positional argument");
+    ap.addKW("firstkw","3", "fkw", "the first keyword argument"); // args - long name, default value (string, default: ""), short name (default: long name)
+    ap.addKW("secondkw","4", "", "the second keyword argument");
+    ap.addKW("kw3","5", "", "the third keyword argument");
     ap.readArguments(argc,argv);
     map<string,string> allArgs = ap.getAllArgs(); //returns map of all arguments with long names as strings
 
