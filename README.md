@@ -14,6 +14,23 @@ secondkw: hi<br>
 hello<br>
 world<br>
 
+Use -h or --help to display the help message:
+
+usage: a [--help/-h] [--firstkw/-fkw] [--secondkw/-secondkw] [--kw3/-kw3] \<first\> \<second\><br> 
+---------<br>
+
+key word arguments:
+
+--help/-h: display this help message<br>
+--firstkw/-fkw: the first keyword argument<br>
+--secondkw/-secondkw: the second keyword argument<br>
+--kw3/-kw3: the third keyword argument
+
+positional arguments:
+
+first: the first positional argument<br>
+second: the second positional argument<br>
+
 ```C++
 int main(int argc, char *argv[]){
 ArgParser ap;
