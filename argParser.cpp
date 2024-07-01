@@ -2,7 +2,9 @@
 #include <iostream>
 #include <map>
 #include <sstream>
+#ifndef stringFunctions
 #include "include/stringFunctions.cpp"
+#endif
 
 using namespace std;
 

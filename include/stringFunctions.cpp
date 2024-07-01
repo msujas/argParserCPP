@@ -1,5 +1,6 @@
 #include <vector>
 #include <string>
+#define stringFunctions
 
 using namespace std;
 
