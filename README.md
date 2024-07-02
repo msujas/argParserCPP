@@ -24,7 +24,7 @@ flag1: 1<br>
 
 Use -h or --help to display the help message:
 
-usage: a [--help/-h] [--firstkw/-fkw] [--secondkw/-secondkw] [--kw3/-kw3] [--flag1/-f1] <first> <second> <br>
+usage: a [--help/-h] [--firstkw/-fkw] [--secondkw/-secondkw] [--kw3/-kw3] [--flag1/-f1] \<first\> \<second\><br>
 ---------<br>
 
 key word arguments:
