@@ -4,8 +4,9 @@
 #include <sstream>
 #ifndef stringFunctions
 #include "include/stringFunctions.cpp"
-#include "stdlib.h"
 #endif
+#include "stdlib.h"
+
 
 using namespace std;
 
@@ -23,6 +24,7 @@ T convertString(const string& stringValue){
     return outValue;
 }
 
+
 class ArgParser{
     private:
     vector<string> kwargs;
@@ -30,11 +32,22 @@ class ArgParser{
     map<string, string> kwargValues;
     vector<string> posArgs;
     vector<string> allArgs;
+    vector<string> flagList;
+    vector<string> shortFlagList;
+    map<string, bool> flagValues;
     map<string, string> posValues;
     map<string,string> allValues;
     map<string, vector<string>> multiValues;
     string helpString;
     map<string,string> argHelpStrings;
+
+    string boolToString(bool value){
+        if (value){
+            return "true";
+        }
+        return "false";
+    }
+
     void checkArgs(string name){
         for (string arg: allArgs){
             if (name == arg){
@@ -46,7 +59,7 @@ class ArgParser{
 
     public:
     ArgParser(){
-        addKW("help", "", "h", "display this help message");
+        addKW("help", "", "h", "display this help message and exit");
     }
     void addKW(const string fullName,string defaultValue = "", string shortName = "", string help = ""){
         checkArgs(fullName);
@@ -59,6 +72,17 @@ class ArgParser{
         allValues[fullName] = defaultValue;
         allArgs.push_back(fullName);
         argHelpStrings[fullName] = help;
+    }
+    void addFlag(string name, bool returnValue = true, string shortName="", string help = ""){
+        if (shortName == ""){
+            shortName = name;
+        }
+        flagList.push_back(name);
+        shortFlagList.push_back(shortName);
+        flagValues[name] = !returnValue;
+        allValues[name] = boolToString(!returnValue);
+        argHelpStrings[name] = help;
+        
     }
     void addPositional(const string name, string defaultValue = "", string help = ""){
         checkArgs(name);
@@ -78,11 +102,15 @@ class ArgParser{
     }
     void readArguments(int argc, char *argv[]){
         vector<int> paPositions;
-        bool inKW = false;
+
+        
         string filename = argv[0];
         helpString = "usage: " + filename +" ";
         for (int i=0; i < kwargs.size();i++){
             helpString += "[--"+kwargs[i]+"/-"+ shortKwargs[i] + "] ";
+        }
+        for (int i = 0; i< flagList.size();i++){
+            helpString += "[--" + flagList[i]+"/-"+shortFlagList[i]+"] ";
         }
         for (string arg : posArgs){
             helpString += "<"+ arg + "> ";
@@ -92,13 +120,18 @@ class ArgParser{
         for (int i=0; i< kwargs.size(); i++){
             helpString += "--"+kwargs[i]+"/-"+shortKwargs[i] + ": " + argHelpStrings[kwargs[i]] + "\n";
         }
+        helpString += "\nflags\n\n";
+        for (int i=0; i< flagList.size(); i++){
+            helpString += "--"+flagList[i] + "/-"+shortFlagList[i]+": "+ argHelpStrings[flagList[i]] +"\n";
+        }
         helpString += "\npositional arguments:\n\n";
         for (string arg : posArgs){
             helpString += arg + ": " + argHelpStrings[arg] + "\n";
         }
         helpString += "\n";
         for (int i = 1; i < argc; i++){
-            inKW = false;
+            bool flag = false;
+            bool inKW = false;
             string argument = argv[i];
             if (argument == "--help" | argument == "-h" ){
                 cout << helpString;
@@ -115,7 +148,20 @@ class ArgParser{
                     break;
                 }
             }
+            
+            
             if (!inKW){
+                for (int j=0;j<flagList.size(); j++){
+                    if (argument == "--"+flagList[j] | argument == "-"+shortFlagList[j]){
+                        flagValues[flagList[j]] = !flagValues[flagList[j]];
+                        allValues[flagList[j]] = boolToString(flagValues[flagList[j]]);
+                        flag=true;
+                        break;
+                    }
+                }
+                if (flag){
+                    continue;
+                }
                 paPositions.push_back(i);
             }
         }
@@ -154,5 +200,9 @@ class ArgParser{
             outVector.push_back(item);
         }
         return outVector;
+    }
+
+    bool getFlag(const string& name){
+        return flagValues[name];
     }
 };
