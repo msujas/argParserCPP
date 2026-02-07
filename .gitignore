@@ -1,3 +1,10 @@
 *.exe
 *.obj
 .vscode
+include
+x64
+.vs
+*.sln
+*.vcx*
+build
+argParser/argParser
