@@ -13,7 +13,7 @@ A class for passing command line arguments. Usage in the argParseExample.cpp fil
 argParseExample.exe 5.6 -fkw 42 hello,world --secondkw hi -kw3 5.7,1.2,98.3 --flag1 
 
 Result printed to terminal:
-
+```
 first positional: 5.6<br>
 second positional: hello,world<br>
 firstkw: 42<br>
@@ -30,10 +30,10 @@ kw3 unpacked:<br>
 1.2<br>
 98.3<br>
 flag1: 1<br>
-
+```
 
 Use -h or --help to display the help message:
-
+```
 usage: a [--help/-h] [--firstkw/-fkw] [--secondkw/-secondkw] [--kw3/-kw3] [--flag1/-f1] \<first\> \<second\><br>
 ---------<br>
 
@@ -52,7 +52,7 @@ positional arguments:
 
 first: the first positional argument<br>
 second: the second positional argument<br>
-
+```
 ```C++
 #include "argParser.h"
 #include <vector>
