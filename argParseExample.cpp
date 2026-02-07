@@ -1,6 +1,9 @@
 #include <iostream>
-#include "argParser.cpp"
+#include "argParser.h"
 #include <map>
+#include <vector>
+#include <iostream>
+#include <string>
 
 using namespace std;
 
