@@ -10,7 +10,7 @@ For use in .cpp file see below. Alternatively can include the .cpp file instead 
 
 A class for passing command line arguments. Usage in the argParseExample.cpp file. Compile example (e.g. 'g++ argParseExample.cpp -o argParseExample' , or 'cl /std:c++17 /EHsc argParseExample.cpp'). Then run with some arguments. Keywords and their arguments must be space separated, e.g.
 
-argParseExample.exe 5.6 -fkw 42 hello,world --secondkw hi -kw3 5.7,1.2,98.3 --flag1 
+```argParseExample.exe 5.6 -fkw 42 hello,world --secondkw hi -kw3 5.7,1.2,98.3 --flag1 ```
 
 Result printed to terminal:
 ```
