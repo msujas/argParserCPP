@@ -1,3 +1,12 @@
+For building, check CMake files for example. If you add this as a submodule into a repository, in the CMake file you can use 
+```CMake
+add_submodule(argParserCPP/argParser)
+target_link_libraries(executableName
+argParser
+)
+```
+For use in .cpp file see below.
+
 A class for passing command line arguments. Usage in the argParseExample.cpp file. Compile example (e.g. 'g++ argParseExample.cpp -o argParseExample' , or 'cl /std:c++17 /EHsc argParseExample.cpp'). Then run with some arguments. Keywords and their arguments must be space separated, e.g.
 
 argParseExample.exe 5.6 -fkw 42 hello,world --secondkw hi -kw3 5.7,1.2,98.3 --flag1 
@@ -44,14 +53,19 @@ first: the first positional argument<br>
 second: the second positional argument<br>
 
 ```C++
+#include "argParser.h"
+#include <vector>
+
 int main(int argc, char *argv[]){
 ArgParser ap;
 ap.addKW("kw1","1"); //full name, default value, short name
-ap.addKW("kw2","1,2,3,4")
+ap.addKW("kw2","1,2,3,4");
 ap.addPositional("p1","2"); //name, default value
-ap.readArguments(argc,argv);
+
+ap.readArguments(argc,argv); //needed to process arguments
+
 int kw1 = ap.getArg<int>("kw1");
 float p1 = ap.getArg<float>("p1");
-vector<float> kw2 = ap.getVectorArg<float>("kw2");
+std::vector<float> kw2 = ap.getVectorArg<float>("kw2");
 }
 ```
