@@ -7,4 +7,5 @@ x64
 *.sln
 *.vcx*
 build
-argParser/argParser
+argParser/argParser/*
+CMakeFiles

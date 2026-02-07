@@ -24,8 +24,7 @@ T1 convertString(const std::string &stringValue)
 }
 
 class ArgParser{   
-
-public:
+private:
     std::vector<std::string> kwargs;
     std::vector<std::string> shortKwargs;
     std::map<std::string, std::string> kwargValues;
@@ -40,6 +39,8 @@ public:
     std::string helpString;
     std::map<std::string,std::string> argHelpStrings;
     std::string boolToString(bool value);
+public:
+
     void checkArgs(std::string name);
     void addKW(const std::string fullName,std::string defaultValue = "", std::string shortName = "", std::string help = "");
 
