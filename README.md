@@ -5,7 +5,15 @@ target_link_libraries(executableName
 argParser
 )
 ```
-For use in .cpp file see below. Alternatively can include the .cpp file instead of the .h if you don't want to compile the library.
+To compile the library alone, run in the argParser subdirectory:
+```
+mkdir build
+cmake -B build
+cmake --build build --config release/debug
+```
+File will be in the build folder or build/release or build/debug . You can then link the library file (.lib (Windows MSVC) or .a (gcc/g++)) to your project.
+
+For use in .cpp file see below. Alternatively, you can include the .cpp file instead of the .h if you don't want to compile the library.
 
 
 A class for passing command line arguments. Usage in the argParseExample.cpp file. Compile example (e.g. 'g++ argParseExample.cpp -o argParseExample' , or 'cl /std:c++17 /EHsc argParseExample.cpp'). Then run with some arguments. Keywords and their arguments must be space separated, e.g.
