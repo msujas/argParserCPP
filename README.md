@@ -15,6 +15,7 @@ File will be in the build folder or build/release or build/debug . You can then 
 
 For use in .cpp file see below. Alternatively, you can include the .cpp file instead of the .h if you don't want to compile the library.
 
+Arguments beginning '-' are assumed to be a keyword or flag argument. If it isn't in the list, the program exits.
 
 A class for passing command line arguments. Usage in the argParseExample.cpp file. Compile example (e.g. 'g++ argParseExample.cpp -o argParseExample' , or 'cl /std:c++17 /EHsc argParseExample.cpp'). Then run with some arguments. Keywords and their arguments must be space separated, e.g.
 
