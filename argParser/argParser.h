@@ -35,19 +35,21 @@ private:
     std::map<std::string, bool> flagValues;
     std::map<std::string, std::string> posValues;
     std::map<std::string,std::string> allValues;
-    std::map<std::string, std::vector<std::string>> multiValues;
     std::string helpString;
     std::map<std::string,std::string> argHelpStrings;
     std::string boolToString(bool value);
+    int npositionals {0};
+    std::vector<std::string> multiPosValues;
+    std::string multiName {""};
     bool multi {false};
 public:
-
+    
     void checkArgs(std::string name);
     void addKW(const std::string fullName,std::string defaultValue = "", std::string shortName = "", std::string help = "");
 
     void addFlag(std::string name, bool returnValue = true, std::string shortName="", std::string help = "");
     void addPositional(const std::string name, std::string defaultValue = "", std::string help = "");
-    void addMultiPositional(const std::string name);
+    void addMultiPositional(const std::string name,std::string help = "");
     void readArguments(int argc, char *argv[]);
     std::map<std::string, std::string> getAllArgs();
 template <typename T>
@@ -76,5 +78,6 @@ std::vector<T2> getVectorArg(const std::string &name)
     ArgParser(){
         addKW("help", "", "h", "display this help message and exit");
     };
+    std::vector<std::string> getMultiArgs();
 
 };

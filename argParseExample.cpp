@@ -9,11 +9,12 @@ using namespace std;
 int main(int argc, char *argv[]){
     ArgParser ap;
     ap.addPositional("first", "1", "the first positional argument, float"); //args - name, default value (string, default: "")
-    ap.addPositional("second","2", "the second positional argument, vector<int>");
+    ap.addPositional("second","2", "the second positional argument, vector<string>");
     ap.addKW("firstkw","3", "fkw", "the first keyword argument, integer"); // args - long name, default value (string, default: ""), short name (default: long name)
     ap.addKW("secondkw","4", "", "the second keyword argument, string");
     ap.addKW("kw3","5", "", "the third keyword argument, vecotr<float>");
     ap.addFlag("flag1",true, "f1","flag argument");
+    ap.addMultiPositional("multipositional", "a multi positiona argument, vector<string>");
     ap.readArguments(argc,argv);
     map<string,string> allArgs = ap.getAllArgs(); //returns map of all arguments with long names as strings
 
@@ -27,16 +28,22 @@ int main(int argc, char *argv[]){
     vector<string> p2 = ap.getVectorArg<string>("second");
     vector<float> kw3 = ap.getVectorArg<float>("kw3");
     bool flag1 = ap.getFlag("flag1");
+    vector<string> multiPos = ap.getMultiArgs();
     cout << kw1 << endl;
     cout << p1 << endl;
     cout << kw1 + p1 << endl;
     cout << "p2 unpacked:\n";
     for (string item : p2){
-    cout << item << endl;
+    cout << '\t' << item << endl;
     }
     cout << "kw3 unpacked:\n";
     for (float item : kw3){
-        cout << item << endl;
+        cout << '\t' << item << endl;
     }
     cout << "flag1: " << flag1 << endl;
+
+    cout << "multi positional aguments\n";
+    for (string item : multiPos){
+        cout << '\t' << item << '\n';
+    }
 }

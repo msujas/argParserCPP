@@ -89,8 +89,9 @@ void ArgParser::addFlag(std::string name, bool returnValue , std::string shortNa
     allValues[name] = boolToString(!returnValue);
     argHelpStrings[name] = help;
 }
-void ArgParser::addPositional(const std::string name, std::string defaultValue, std::string help )
-{
+
+void ArgParser::addPositional(const std::string name, std::string defaultValue, std::string help ){
+    npositionals++;
     checkArgs(name);
     posArgs.push_back(name);
     posValues[name] = defaultValue;
@@ -98,11 +99,16 @@ void ArgParser::addPositional(const std::string name, std::string defaultValue, 
     allArgs.push_back(name);
     argHelpStrings[name] = help;
 }
-void ArgParser::addMultiPositional(const std::string name )
-{
+void ArgParser::addMultiPositional(const std::string name , std::string help){
     //arbitrary length positional
+    if (multi){
+        std::cout << "only one multi positional argument can be declared\n";
+        exit(-1);
+    }
     multi = true;
+    multiName = name;
     allArgs.push_back(name);
+    argHelpStrings[name] = help;
     /*
     for (int i; i < length; i++){
         posArgs.push_back(name);
@@ -111,8 +117,9 @@ void ArgParser::addMultiPositional(const std::string name )
 }
 void ArgParser::readArguments(int argc, char *argv[])
 {   
+
     std::vector<std::string> givenKeywords;
-    std::vector<int> paPositions;
+    std::vector<int> paPositions; //positional argument positions
 
     std::string filename = argv[0];
     helpString = "usage: " + filename + " ";
@@ -125,6 +132,9 @@ void ArgParser::readArguments(int argc, char *argv[])
     for (std::string arg : posArgs){
         helpString += "<" + arg + "> ";
     }
+    if (multi){
+        helpString += "<" + multiName+ "(multiple positions)> ";
+    } 
     helpString += "\n---------\n\nkey word arguments:\n\n";
 
     for (int i = 0; i < kwargs.size(); i++){
@@ -137,6 +147,9 @@ void ArgParser::readArguments(int argc, char *argv[])
     helpString += "\npositional arguments:\n\n";
     for (std::string arg : posArgs){
         helpString += arg + ": " + argHelpStrings[arg] + "\n";
+    }
+    if (multi){
+        helpString += multiName + ": " + argHelpStrings[multiName] + "\n";
     }
     helpString += "\n";
     for (int i = 1; i < argc; i++){
@@ -187,14 +200,16 @@ void ArgParser::readArguments(int argc, char *argv[])
         std::cout << "error: number of given arguments greater than number registered, and multiple positional arguments not added\nexiting";
         exit(-1);
     }
-    for (int i = 0; i < paPositions.size(); i++)
-    {
-        if (i > posArgs.size() - 1)
-        {
-            break;
+    for (int i = 0; i < paPositions.size(); i++){
+
+        if (i < npositionals){
+            posValues[posArgs[i]] = argv[paPositions[i]];
+            allValues[posArgs[i]] = argv[paPositions[i]];
         }
-        posValues[posArgs[i]] = argv[paPositions[i]];
-        allValues[posArgs[i]] = argv[paPositions[i]];
+        else{
+            multiPosValues.push_back(argv[paPositions[i]]);
+        }
+        
     }
 }
 
@@ -202,6 +217,10 @@ std::map<std::string, std::string> ArgParser::getAllArgs(){
     return allValues;
 }
 
+std::vector<std::string> ArgParser::getMultiArgs(){
+    //get values of multipositional arguments as a string vector
+    return multiPosValues;
+}
 
 
 bool ArgParser::getFlag(const std::string &name)

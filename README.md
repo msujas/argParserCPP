@@ -23,22 +23,22 @@ A class for passing command line arguments. Usage in the argParseExample.cpp fil
 
 Result printed to terminal:
 ```
-first positional: 5.6<br>
-second positional: hello,world<br>
-firstkw: 42<br>
-secondkw: hi<br>
-flag1 string: true<br>
-42<br>
-5.6<br>
-47.6<br>
-p2 unpacked:<br>
-hello<br>
-world<br>
-kw3 unpacked:<br>
-5.7<br>
-1.2<br>
-98.3<br>
-flag1: 1<br>
+first positional: 5.6
+second positional: hello,world
+firstkw: 42
+secondkw: hi
+flag1 string: true
+42
+5.6
+47.6
+p2 unpacked:
+hello
+world
+kw3 unpacked:
+5.7
+1.2
+98.3
+flag1: 1
 ```
 
 Use -h or --help to display the help message:
