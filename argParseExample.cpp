@@ -8,11 +8,11 @@ using namespace std;
 
 int main(int argc, char *argv[]){
     ArgParser ap;
-    ap.addPositional("first", "1", "the first positional argument"); //args - name, default value (string, default: "")
-    ap.addPositional("second","2", "the second positional argument");
-    ap.addKW("firstkw","3", "fkw", "the first keyword argument"); // args - long name, default value (string, default: ""), short name (default: long name)
-    ap.addKW("secondkw","4", "", "the second keyword argument");
-    ap.addKW("kw3","5", "", "the third keyword argument");
+    ap.addPositional("first", "1", "the first positional argument, float"); //args - name, default value (string, default: "")
+    ap.addPositional("second","2", "the second positional argument, vector<int>");
+    ap.addKW("firstkw","3", "fkw", "the first keyword argument, integer"); // args - long name, default value (string, default: ""), short name (default: long name)
+    ap.addKW("secondkw","4", "", "the second keyword argument, string");
+    ap.addKW("kw3","5", "", "the third keyword argument, vecotr<float>");
     ap.addFlag("flag1",true, "f1","flag argument");
     ap.readArguments(argc,argv);
     map<string,string> allArgs = ap.getAllArgs(); //returns map of all arguments with long names as strings

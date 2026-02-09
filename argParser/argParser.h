@@ -39,6 +39,7 @@ private:
     std::string helpString;
     std::map<std::string,std::string> argHelpStrings;
     std::string boolToString(bool value);
+    bool multi {false};
 public:
 
     void checkArgs(std::string name);
@@ -46,7 +47,7 @@ public:
 
     void addFlag(std::string name, bool returnValue = true, std::string shortName="", std::string help = "");
     void addPositional(const std::string name, std::string defaultValue = "", std::string help = "");
-    void addMultiPositional(const std::string name, const int length = 1);
+    void addMultiPositional(const std::string name);
     void readArguments(int argc, char *argv[]);
     std::map<std::string, std::string> getAllArgs();
 template <typename T>
@@ -71,6 +72,7 @@ std::vector<T2> getVectorArg(const std::string &name)
     return outVector;
 }
     bool getFlag(const std::string& name);
+    
     ArgParser(){
         addKW("help", "", "h", "display this help message and exit");
     };

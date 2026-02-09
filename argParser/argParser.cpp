@@ -98,8 +98,10 @@ void ArgParser::addPositional(const std::string name, std::string defaultValue, 
     allArgs.push_back(name);
     argHelpStrings[name] = help;
 }
-void ArgParser::addMultiPositional(const std::string name, const int length )
+void ArgParser::addMultiPositional(const std::string name )
 {
+    //arbitrary length positional
+    multi = true;
     allArgs.push_back(name);
     /*
     for (int i; i < length; i++){
@@ -108,86 +110,82 @@ void ArgParser::addMultiPositional(const std::string name, const int length )
     */
 }
 void ArgParser::readArguments(int argc, char *argv[])
-{
+{   
+    std::vector<std::string> givenKeywords;
     std::vector<int> paPositions;
 
     std::string filename = argv[0];
     helpString = "usage: " + filename + " ";
-    for (int i = 0; i < kwargs.size(); i++)
-    {
+    for (int i = 0; i < kwargs.size(); i++){
         helpString += "[--" + kwargs[i] + "/-" + shortKwargs[i] + "] ";
     }
-    for (int i = 0; i < flagList.size(); i++)
-    {
+    for (int i = 0; i < flagList.size(); i++){
         helpString += "[--" + flagList[i] + "/-" + shortFlagList[i] + "] ";
     }
-    for (std::string arg : posArgs)
-    {
+    for (std::string arg : posArgs){
         helpString += "<" + arg + "> ";
     }
     helpString += "\n---------\n\nkey word arguments:\n\n";
 
-    for (int i = 0; i < kwargs.size(); i++)
-    {
+    for (int i = 0; i < kwargs.size(); i++){
         helpString += "--" + kwargs[i] + "/-" + shortKwargs[i] + ": " + argHelpStrings[kwargs[i]] + "\n";
     }
     helpString += "\nflags\n\n";
-    for (int i = 0; i < flagList.size(); i++)
-    {
+    for (int i = 0; i < flagList.size(); i++){
         helpString += "--" + flagList[i] + "/-" + shortFlagList[i] + ": " + argHelpStrings[flagList[i]] + "\n";
     }
     helpString += "\npositional arguments:\n\n";
-    for (std::string arg : posArgs)
-    {
+    for (std::string arg : posArgs){
         helpString += arg + ": " + argHelpStrings[arg] + "\n";
     }
     helpString += "\n";
-    for (int i = 1; i < argc; i++)
-    {
+    for (int i = 1; i < argc; i++){
         bool flag = false;
         bool inKW = false;
         std::string argument = argv[i];
-        if (argument == "--help" | argument == "-h")
-        {
+        if (argument == "--help" | argument == "-h"){
             std::cout << helpString;
             exit(0);
         }
-        for (int j = 0; j < kwargs.size(); j++)
-        {
+        for (int j = 0; j < kwargs.size(); j++){
             std::string kw = kwargs[j];
             std::string skw = shortKwargs[j];
-            if (argument == "--" + kw | argument == "-" + skw)
-            {
+            if (argument == "--" + kw | argument == "-" + skw){
                 kwargValues[kw] = argv[i + 1];
                 allValues[kw] = argv[i + 1];
                 i++;
                 inKW = true;
                 break;
             }
+            
         }
 
-        if (!inKW)
-        {
+        if (!inKW){
             for (int j = 0; j < flagList.size(); j++)
             {
-                if (argument == "--" + flagList[j] | argument == "-" + shortFlagList[j])
-                {
+                if (argument == "--" + flagList[j] | argument == "-" + shortFlagList[j]){
                     flagValues[flagList[j]] = !flagValues[flagList[j]];
                     allValues[flagList[j]] = boolToString(flagValues[flagList[j]]);
                     flag = true;
                     break;
                 }
             }
-            if (flag)
-            {
+            if (flag){
                 continue;
             }
             paPositions.push_back(i);
         }
+        if (argument[0] == '-' & !inKW & !flag){
+            std::string message {argument + " not in keyword or flag arguments, exiting"};
+            //throw std::invalid_argument(argument + " not in keyword or flag arguments");
+            std::cout << message;
+            exit(-1);
+        }
     }
-    if (paPositions.size() > posArgs.size())
-    {
-        std::cout << "warning: number of given arguments greater than number registered\n";
+    if (paPositions.size() > posArgs.size() & !multi){
+        //throw std::invalid_argument("too many positional arguments given");
+        std::cout << "error: number of given arguments greater than number registered, and multiple positional arguments not added\nexiting";
+        exit(-1);
     }
     for (int i = 0; i < paPositions.size(); i++)
     {
@@ -200,8 +198,7 @@ void ArgParser::readArguments(int argc, char *argv[])
     }
 }
 
-std::map<std::string, std::string> ArgParser::getAllArgs()
-{
+std::map<std::string, std::string> ArgParser::getAllArgs(){
     return allValues;
 }
 

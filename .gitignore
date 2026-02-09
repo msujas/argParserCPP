@@ -9,3 +9,4 @@ x64
 build
 argParser/argParser/*
 CMakeFiles
+stringFunctions
