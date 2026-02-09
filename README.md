@@ -15,9 +15,11 @@ File will be in the build folder or build/release or build/debug . You can then 
 
 For use in .cpp file see below. Alternatively, you can include the .cpp file instead of the .h if you don't want to compile the library.
 
+A class for passing command line arguments. Usage in the argParseExample.cpp file. Compile example (e.g. 'g++ argParseExample.cpp -o argParseExample' , or 'cl /std:c++17 /EHsc argParseExample.cpp'). Then run with some arguments. Keywords and their arguments must be space separated,.
+
 Arguments beginning '-' are assumed to be a keyword or flag argument. If it isn't in the list, the program exits.
 
-A class for passing command line arguments. Usage in the argParseExample.cpp file. Compile example (e.g. 'g++ argParseExample.cpp -o argParseExample' , or 'cl /std:c++17 /EHsc argParseExample.cpp'). Then run with some arguments. Keywords and their arguments must be space separated, e.g.
+E.g.
 
 ```argParseExample.exe 5.6 -fkw 42 hello,world --secondkw hi -kw3 5.7,1.2,98.3 --flag1 ```
 
@@ -43,15 +45,15 @@ flag1: 1
 
 Use -h or --help to display the help message:
 ```
-usage: a [--help/-h] [--firstkw/-fkw] [--secondkw/-secondkw] [--kw3/-kw3] [--flag1/-f1] \<first\> \<second\><br>
----------<br>
+usage: ./example [--help/-h] [--firstkw/-fkw] [--secondkw/-secondkw] [--kw3/-kw3] [--flag1/-f1] <first> <second> <multipositional(multiple positions)> 
+---------
 
 key word arguments:
 
---help/-h: display this help message and exit<br>
---firstkw/-fkw: the first keyword argument<br>
---secondkw/-secondkw: the second keyword argument<br>
---kw3/-kw3: the third keyword argument<br>
+--help/-h: display this help message and exit
+--firstkw/-fkw: the first keyword argument, integer
+--secondkw/-secondkw: the second keyword argument, string
+--kw3/-kw3: the third keyword argument, vecotr<float>
 
 flags
 
@@ -59,8 +61,9 @@ flags
 
 positional arguments:
 
-first: the first positional argument<br>
-second: the second positional argument<br>
+first: the first positional argument, float
+second: the second positional argument, vector<string>
+multipositional: a multi positiona argument, vector<string>
 ```
 ```C++
 #include "argParser.h"
