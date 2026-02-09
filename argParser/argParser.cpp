@@ -197,7 +197,7 @@ void ArgParser::readArguments(int argc, char *argv[])
     }
     if (paPositions.size() > posArgs.size() & !multi){
         //throw std::invalid_argument("too many positional arguments given");
-        std::cout << "error: number of given arguments greater than number registered, and multiple positional arguments not added\nexiting";
+        std::cout << "error: number of given arguments greater than number registered, and multiple positional arguments not added\nexiting\n";
         exit(-1);
     }
     for (int i = 0; i < paPositions.size(); i++){
