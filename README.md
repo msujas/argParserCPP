@@ -15,7 +15,7 @@ File will be in the build folder or build/release or build/debug . You can then 
 
 For use in .cpp file see below. Alternatively, you can include the .cpp file instead of the .h if you don't want to compile the library.
 
-A class for passing command line arguments. Usage in the argParseExample.cpp file. Compile example (same as above with cmake, but in top directory). Then run with some arguments. Keywords and their arguments must be space separated.
+A class for passing command line arguments. Usage in the argParseExample.cpp file. Compile example (```mkdir build```, then run build.bat/build.sh). Then run with some arguments. Keywords and their arguments must be space separated.
 
 Arguments beginning '-' are assumed to be a keyword or flag argument. If it isn't in the list, the program exits.
 
