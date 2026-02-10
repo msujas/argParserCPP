@@ -61,7 +61,19 @@ void ArgParser::checkArgs(std::string name)
     }
 }
 
+std::string ArgParser::kwHelpName(std::string name, std::string shortname){
+    return "--" + name + "/-" + shortname + ":";
+}
 
+std::string ArgParser::posHelpName(std::string name){
+    return "--" + name + ":";
+}
+
+void ArgParser::checkHelpNameLen(std::string helpName){
+    if (helpName.size() > longestHelpName){
+        longestHelpName = helpName.size();
+    }
+}
 void ArgParser::addKW(const std::string fullName, std::string defaultValue , std::string shortName , std::string help )
 {
     checkArgs(fullName);
@@ -75,6 +87,8 @@ void ArgParser::addKW(const std::string fullName, std::string defaultValue , std
     allValues[fullName] = defaultValue;
     allArgs.push_back(fullName);
     argHelpStrings[fullName] = help;
+    helpName = kwHelpName(fullName, shortName);
+    checkHelpNameLen(helpName);
 }
     
 void ArgParser::addFlag(std::string name, bool returnValue , std::string shortName , std::string help )
@@ -88,6 +102,8 @@ void ArgParser::addFlag(std::string name, bool returnValue , std::string shortNa
     flagValues[name] = !returnValue;
     allValues[name] = boolToString(!returnValue);
     argHelpStrings[name] = help;
+    helpName = kwHelpName(name, shortName);
+    checkHelpNameLen(helpName);
 }
 
 void ArgParser::addPositional(const std::string name, std::string defaultValue, std::string help ){
@@ -98,6 +114,13 @@ void ArgParser::addPositional(const std::string name, std::string defaultValue, 
     allValues[name] = defaultValue;
     allArgs.push_back(name);
     argHelpStrings[name] = help;
+    helpName = name + ":";
+    if (helpName.size() > longestHelpName){
+        longestHelpName = helpName.size();
+    }
+    helpName = posHelpName(name);
+    checkHelpNameLen(helpName);
+
 }
 void ArgParser::addMultiPositional(const std::string name , std::string help){
     //arbitrary length positional
@@ -109,6 +132,8 @@ void ArgParser::addMultiPositional(const std::string name , std::string help){
     multiName = name;
     allArgs.push_back(name);
     argHelpStrings[name] = help;
+    helpName = posHelpName(name);
+    checkHelpNameLen(helpName);
     /*
     for (int i; i < length; i++){
         posArgs.push_back(name);
@@ -138,18 +163,27 @@ void ArgParser::readArguments(int argc, char *argv[])
     helpString += "\n---------\n\nkey word arguments:\n\n";
 
     for (int i = 0; i < kwargs.size(); i++){
-        helpString += "--" + kwargs[i] + "/-" + shortKwargs[i] + ": " + argHelpStrings[kwargs[i]] + "\n";
+        helpName = kwHelpName(kwargs[i],shortKwargs[i]);
+        nspaces = longestHelpName + helpSpacing - helpName.size();
+        helpString += helpName + std::string(nspaces, ' ') + argHelpStrings[kwargs[i]] + "\n";
     }
     helpString += "\nflags\n\n";
     for (int i = 0; i < flagList.size(); i++){
-        helpString += "--" + flagList[i] + "/-" + shortFlagList[i] + ": " + argHelpStrings[flagList[i]] + "\n";
+        helpName = kwHelpName(flagList[i], shortFlagList[i]);
+        nspaces = longestHelpName + helpSpacing - helpName.size();
+        helpString += helpName + std::string(nspaces,' ') + argHelpStrings[flagList[i]] + "\n";
     }
     helpString += "\npositional arguments:\n\n";
     for (std::string arg : posArgs){
-        helpString += arg + ": " + argHelpStrings[arg] + "\n";
+        helpName = posHelpName(arg);
+        nspaces = longestHelpName + helpSpacing - helpName.size();
+        helpString += helpName + std::string(nspaces, ' ') + argHelpStrings[arg] + "\n";
     }
     if (multi){
-        helpString += multiName + ": " + argHelpStrings[multiName] + "\n";
+        helpName = posHelpName(multiName);
+        nspaces = longestHelpName + helpSpacing - helpName.size();
+        helpString += helpName + std::string(nspaces, ' ') + argHelpStrings[multiName] + "\n";
+
     }
     helpString += "\n";
     for (int i = 1; i < argc; i++){

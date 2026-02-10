@@ -15,7 +15,7 @@ int main(int argc, char *argv[]){
     ap.addPositional("second","2", "the second positional argument, vector<string>");
     ap.addKW("firstkw","3", "fkw", "the first keyword argument, integer"); // args - long name, default value (string, default: ""), short name (default: long name)
     ap.addKW("secondkw","4", "", "the second keyword argument, string");
-    ap.addKW("kw3","5", "", "the third keyword argument, vecotr<float>");
+    ap.addKW("kw3","5", "", "the third keyword argument, vector<float>");
     ap.addFlag("flag1",true, "f1","flag argument");
     #ifdef MULTIARGS
     ap.addMultiPositional("multipositional", "a multi positiona argument, vector<string>");

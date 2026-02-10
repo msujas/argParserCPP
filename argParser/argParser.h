@@ -39,9 +39,16 @@ private:
     std::map<std::string,std::string> argHelpStrings;
     std::string boolToString(bool value);
     int npositionals {0};
+    int longestHelpName {0};
+    std::string helpName;
     std::vector<std::string> multiPosValues;
     std::string multiName {""};
     bool multi {false};
+    std::string kwHelpName(std::string name, std::string shortname);
+    std::string posHelpName(std::string name);
+    void checkHelpNameLen(std::string helpName);
+    int helpSpacing {5};
+    int nspaces;
 public:
     
     void checkArgs(std::string name);
