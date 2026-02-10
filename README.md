@@ -64,7 +64,7 @@ positional arguments:
 
 --first:                  the first positional argument, float
 --second:                 the second positional argument, vector<string>
---multipositional:        a multi positiona argument, vector<string>
+--multipositional:        a multi positional argument, vector<string>
 
 ```
 ```C++
