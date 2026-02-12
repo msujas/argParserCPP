@@ -4,7 +4,6 @@
 #include <map>
 #include "argParser.h"
 #include <string>
-#include <bits/stdc++.h>
 
 int min(int a, int b){
     return (a < b) ? a : b;
