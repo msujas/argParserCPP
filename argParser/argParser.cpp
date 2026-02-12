@@ -4,7 +4,11 @@
 #include <map>
 #include "argParser.h"
 #include <string>
+#include <bits/stdc++.h>
 
+int min(int a, int b){
+    return (a < b) ? a : b;
+}
 
 bool isIn(std::string s, std::string pattern){
     if (s.find(pattern)!= -1){
@@ -140,9 +144,33 @@ void ArgParser::addMultiPositional(const std::string name , std::string help){
     }
     */
 }
+
+std::string ArgParser::makeDescriptionString(std::string helpstring, std::string descstring){
+
+    int descriptionSpace {maxLineLength - longestHelpName - helpSpacing};
+    
+    auto helpdescspace {longestHelpName  + helpSpacing - helpstring.size()}; //auto to prevent conversion warning of size_type to int
+    if (helpstring.size() + descstring.size()+ helpSpacing < maxLineLength){
+        return helpstring + std::string(helpdescspace,' ')+ descstring + "\n";
+    }
+
+    std::string newstring = descstring.substr(0, descriptionSpace) + "\n";
+
+    for (int i = 0; i < descstring.size()/descriptionSpace; i++){
+        int endline = min(descriptionSpace, descstring.size() - descriptionSpace*(i+1));
+        newstring += std::string(longestHelpName+helpSpacing, ' ') +  descstring.substr(descriptionSpace*(i+1), endline) + "\n";
+    }
+    return helpstring + std::string(helpdescspace,' ') + newstring;
+}
+
 void ArgParser::readArguments(int argc, char *argv[])
 {   
 
+    if (longestHelpName > maxLineLength){
+        maxLineLength = longestHelpName + 140;
+    }
+    int descriptionSpace {longestHelpName + helpSpacing};
+    std::string descriptionString;
     std::vector<std::string> givenKeywords;
     std::vector<int> paPositions; //positional argument positions
 
@@ -165,24 +193,29 @@ void ArgParser::readArguments(int argc, char *argv[])
     for (int i = 0; i < kwargs.size(); i++){
         helpName = kwHelpName(kwargs[i],shortKwargs[i]);
         nspaces = longestHelpName + helpSpacing - helpName.size();
-        helpString += helpName + std::string(nspaces, ' ') + argHelpStrings[kwargs[i]] + "\n";
+        //descriptionString = argHelpStrings[kwargs[i]];
+        descriptionString = makeDescriptionString(helpName, argHelpStrings[kwargs[i]]);
+        helpString +=  descriptionString ;//helpName + std::string(nspaces, ' ') + argHelpStrings[kwargs[i]] + "\n";
     }
     helpString += "\nflags\n\n";
     for (int i = 0; i < flagList.size(); i++){
         helpName = kwHelpName(flagList[i], shortFlagList[i]);
         nspaces = longestHelpName + helpSpacing - helpName.size();
-        helpString += helpName + std::string(nspaces,' ') + argHelpStrings[flagList[i]] + "\n";
+        descriptionString = makeDescriptionString(helpName, argHelpStrings[kwargs[i]]);
+        helpString += descriptionString; //helpName + std::string(nspaces,' ') + argHelpStrings[flagList[i]] + "\n";
     }
     helpString += "\npositional arguments:\n\n";
     for (std::string arg : posArgs){
         helpName = posHelpName(arg);
         nspaces = longestHelpName + helpSpacing - helpName.size();
-        helpString += helpName + std::string(nspaces, ' ') + argHelpStrings[arg] + "\n";
+        descriptionString = makeDescriptionString(helpName, argHelpStrings[arg]);
+        helpString += descriptionString; //helpName + std::string(nspaces, ' ') + argHelpStrings[arg] + "\n";
     }
     if (multi){
         helpName = posHelpName(multiName);
         nspaces = longestHelpName + helpSpacing - helpName.size();
-        helpString += helpName + std::string(nspaces, ' ') + argHelpStrings[multiName] + "\n";
+        descriptionString = makeDescriptionString(helpName, argHelpStrings[multiName]);
+        helpString += descriptionString; //helpName + std::string(nspaces, ' ') + argHelpStrings[multiName] + "\n";
 
     }
     helpString += "\n";

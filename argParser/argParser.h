@@ -5,6 +5,8 @@
 #include <sstream>
 
 
+int min(int a, int b);
+
 bool isIn(std::string s, std::string pattern);
 
 std::vector<std::string> splitString(std::string inputString, std::string delimiter=",");
@@ -47,8 +49,10 @@ private:
     std::string kwHelpName(std::string name, std::string shortname);
     std::string posHelpName(std::string name);
     void checkHelpNameLen(std::string helpName);
-    int helpSpacing {5};
+    const int helpSpacing {5};
+    int maxLineLength {150};
     int nspaces;
+    std::string makeDescriptionString(std::string helpstring,std::string descstring);
 public:
     
     void checkArgs(std::string name);

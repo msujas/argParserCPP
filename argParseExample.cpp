@@ -11,7 +11,7 @@ using namespace std;
 
 int main(int argc, char *argv[]){
     ArgParser ap;
-    ap.addPositional("first", "1", "the first positional argument, float"); //args - name, default value (string, default: "")
+    ap.addPositional("first", "1", "the first positional argument, float "+ std::string(150,'a')); //args - name, default value (string, default: "")
     ap.addPositional("second","2", "the second positional argument, vector<string>");
     ap.addKW("firstkw","3", "fkw", "the first keyword argument, integer"); // args - long name, default value (string, default: ""), short name (default: long name)
     ap.addKW("secondkw","4", "", "the second keyword argument, string");
