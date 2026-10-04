@@ -1,6 +1,6 @@
 For building, check CMake files for example. If you add this as a submodule into a repository, in the CMake file you can use 
 ```CMake
-add_submodule(argParserCPP/argParser)
+add_subdirectory(argParserCPP/argParser)
 target_link_libraries(executableName
 argParser
 )
